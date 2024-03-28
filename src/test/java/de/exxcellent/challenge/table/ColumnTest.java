@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author Magdalena von Schwerin <magdalena.vonschwerin@gmail.com>
  */
 
-public class TestColumn {
+public class ColumnTest {
 
     private Column column;
 

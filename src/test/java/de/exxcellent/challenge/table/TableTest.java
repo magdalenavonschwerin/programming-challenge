@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Magdalena von Schwerin <magdalena.vonschwerin@gmail.com>
  */
-public class TestTable {
+public class TableTest {
 
     private Table table;
 

@@ -19,14 +19,14 @@ public final class App {
      * @param args The CLI arguments passed
      */
     public static void main(String... args) {
-        try {
-            String challenge = args[0];
-            String fileName = args[1];
 
-            if(args.length != 2 || !isValidChallenge(challenge) || !isValidCSV(fileName)){
+            if(args.length != 2){
+                throw new IllegalArgumentException("Usage: java App (--weather|--football) <data_csv_file>");
+            } else if(!isValidChallenge(args[0]) || !isValidCSV(args[1])){
                 throw new IllegalArgumentException("Usage: java App (--weather|--football) <data_csv_file>");
             }
 
+            String fileName = args[1];
 
             Reader reader = new Reader();
             String resourcePath = "/de/exxcellent/challenge/" + fileName;
@@ -43,10 +43,7 @@ public final class App {
                 String teamWithSmallestGoalSpread = "A good team";
                 System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
             }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
+
 
     }
 

@@ -1,8 +1,5 @@
 package de.exxcellent.challenge;
 
-import de.exxcellent.challenge.handler.WeatherHandler;
-import de.exxcellent.challenge.reader.Reader;
-import de.exxcellent.challenge.table.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,23 +12,17 @@ import java.io.PrintStream;
  * @author Benjamin Schmid <benjamin.schmid@exxcellent.de>
  * @author Magdalena von Schwerin <magdalena.vonschwerin@gmail.com>
  */
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AppTest {
 
     private ByteArrayOutputStream outputStream;
-    private PrintStream originalOut;
 
     @BeforeEach
     void setUp() {
         // Redirect System.out to capture the output
         outputStream = new ByteArrayOutputStream();
-        originalOut = System.out;
         System.setOut(new PrintStream(outputStream));
     }
 
@@ -44,41 +35,24 @@ public class AppTest {
 
     /**
      * Test for the exit code triggered by
-     * invalid arguments (challenge or csv)
-     * too many arguments
-     * too few arguments
-     * arguments == null
+     *  too many arguments
+     *  too few arguments
+     *  arguments == null
+     *  invalid arguments (challenge or csv)
      */
     @Test
-    public void testMainInvalidArgument() {
-        App.main("--invalid", "invalid.csv");
+    public void testMainInvalidArguments() {
+        assertThrows(IllegalArgumentException.class, () -> App.main("--weather", "csv_file.csv", "note"));
+        assertThrows(IllegalArgumentException.class, () -> App.main("--weather"));
+        assertThrows(NullPointerException.class, () -> App.main("--weather", null));
 
-        ProcessBuilder processBuilder = new ProcessBuilder("java", "App", "--weather", "weather.csv");
-        int exitCode = -1;
-        try {
-            Process process = processBuilder.start();
-            exitCode = process.waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        assertThrows(IllegalArgumentException.class, () -> App.main("--basketball", "basketball.csv"));
 
-        assertEquals(1, exitCode);
+        assertThrows(NullPointerException.class, () -> App.main("--weather", "invalid.csv"));
+        assertThrows(IllegalArgumentException.class, () -> App.main("--weather", "invalid.txt"));
+        assertThrows(IllegalArgumentException.class, () -> App.main("--weather", "weather"));
+        assertThrows(IllegalArgumentException.class, () -> App.main("--weather", "  "));
     }
-
-
-    /*
-      TODO test like above
-     */
-    @Test
-    public void testMainWithInvalidCsvFile() {
-        App.main("--weather", null);
-        App.main("--weather", "invalid.csv");
-        App.main("--weather", "invalid.txt");
-        App.main("--weather", "weather");
-        App.main("--weather", "  ");
-    }
-
-
 
 }
 

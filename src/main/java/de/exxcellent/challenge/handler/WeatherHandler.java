@@ -4,7 +4,6 @@ import de.exxcellent.challenge.table.Column;
 import de.exxcellent.challenge.table.Table;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
 /**
@@ -12,7 +11,7 @@ import java.util.stream.IntStream;
  *
  * @author Magdalena von Schwerin <magdalena.vonschwerin@gmail.com>
  */
-public class WeatherHandler {
+public class WeatherHandler implements DataHandler {
 
     private final Table weatherData;
 
@@ -26,7 +25,8 @@ public class WeatherHandler {
      *
      * @return number of the day with the smallest temperature distance
      */
-    public String getDayWithSmallestTemperatureSpread() throws IllegalStateException {
+    @Override
+    public String process() throws IllegalStateException {
         if (weatherData == null) {
             throw new NullPointerException("Weather data is null");
         }
@@ -39,6 +39,17 @@ public class WeatherHandler {
             List<String> mxtValues = mxt.getValues();
             List<String> mntValues = mnt.getValues();
 
+            int smallestDistanceIndex = getDayWithSmallestTempDistance(mxtValues, mntValues);
+
+            return days.getValueAtIndex(smallestDistanceIndex);
+
+        } catch (NullPointerException e) {
+            throw new IllegalStateException("Missing column in weather data", e);
+        }
+    }
+
+    private int getDayWithSmallestTempDistance(List<String> mxtValues, List<String> mntValues){
+        try {
             // Convert values to integers
             List<Integer> mxtValueNumbers = mxtValues.stream()
                     .map(Integer::valueOf)
@@ -48,16 +59,14 @@ public class WeatherHandler {
                     .toList();
 
             // get smallest temperature distance
-            int smallestDistanceIndex = IntStream.range(0, mxtValueNumbers.size())
+            return IntStream.range(0, mxtValueNumbers.size())
                     .reduce((a, b) -> Math.abs(mxtValueNumbers.get(a) - mntValueNumbers.get(a)) <
                             Math.abs(mxtValueNumbers.get(b) - mntValueNumbers.get(b)) ? a : b)
                     .orElse(-1);
-
-            return days.getValueAtIndex(smallestDistanceIndex);
-        } catch (NullPointerException e) {
-            throw new IllegalStateException("Missing column in weather data", e);
         } catch (NumberFormatException e) {
             throw new IllegalStateException("Invalid data format in weather data", e);
         }
+
     }
+
 }

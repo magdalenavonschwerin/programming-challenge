@@ -4,6 +4,8 @@ import de.exxcellent.challenge.table.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -11,18 +13,18 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Magdalena von Schwerin
  */
-public class ReaderTest {
+public class CSVFileReaderTest {
 
-    private Reader reader;
+    private CSVFileReader CSVFileReader;
 
     @BeforeEach
     public void setUp() {
-        reader = new Reader();
+        CSVFileReader = new CSVFileReader();
     }
 
     @Test
     public void testReadValidFile() {
-        Table table = reader.read("/valid_file.csv");
+        Table table = CSVFileReader.read("/valid_file.csv");
         assertNotNull(table);
         assertEquals(3, table.getNumberOfColumns());
         assertEquals("Header1", table.getColumnByIndex(0).getHeader());
@@ -38,19 +40,24 @@ public class ReaderTest {
     }
 
     @Test
-    public void testReadFileWithWrongPath() {
-        Table table = reader.read("resources/wrong_path.csv");
-        assertNull(table);
+    void testReadFileNonexistent() {
+        CSVFileReader reader = new CSVFileReader();
+        assertThrows(IllegalArgumentException.class, () -> reader.readFile("/nonexistent_file.csv"));
     }
 
     @Test
-    public void testReadNonExistentFile() {
-        Table table = reader.read("/nonexistent_file.csv");
-        assertNull(table);
+    void testReadEmptyFile() {
+        CSVFileReader reader = new CSVFileReader();
+        List<String> lines = reader.readFile("/empty_file.csv");
+
+        assertNotNull(lines);
+        assertTrue(lines.isEmpty());
     }
 
     @Test
-    public void testReadInvalidFile() {
-        assertThrows(IllegalArgumentException.class, () -> reader.read("/invalid_file.csv"));
+    void testReadFileWithInvalidContent() {
+        CSVFileReader reader = new CSVFileReader();
+        assertThrows(IllegalArgumentException.class, () -> reader.readFile("/invalid_file.csv"));
     }
+
 }

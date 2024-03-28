@@ -26,7 +26,7 @@ public class WeatherHandlerTest {
         Table weatherData = new Table(columns);
 
         WeatherHandler weatherHandler = new WeatherHandler(weatherData);
-        String result = weatherHandler.getDayWithSmallestTemperatureSpread();
+        String result = weatherHandler.process();
 
         assertEquals("1", result);
     }
@@ -45,7 +45,7 @@ public class WeatherHandlerTest {
         Table weatherData = new Table(columns);
 
         WeatherHandler weatherHandler = new WeatherHandler(weatherData);
-        String result = weatherHandler.getDayWithSmallestTemperatureSpread();
+        String result = weatherHandler.process();
 
         assertEquals("3", result);
     }
@@ -54,14 +54,14 @@ public class WeatherHandlerTest {
     @Test
     public void testGetDayWithSmallestTemperatureSpreadWeatherDataNull() {
         WeatherHandler weatherHandler = new WeatherHandler(null);
-        assertThrows(NullPointerException.class, weatherHandler::getDayWithSmallestTemperatureSpread);
+        assertThrows(NullPointerException.class, weatherHandler::process);
     }
 
     @Test
     public void testGetDayWithSmallestTemperatureSpreadEmptyTable() {
         Table weatherData = new Table();
         WeatherHandler weatherHandler = new WeatherHandler(weatherData);
-        assertThrows(IllegalStateException.class, weatherHandler::getDayWithSmallestTemperatureSpread);
+        assertThrows(IllegalStateException.class, weatherHandler::process);
     }
 
     /**
@@ -75,7 +75,7 @@ public class WeatherHandlerTest {
         Table weatherData = new Table(columns);
         WeatherHandler weatherHandler = new WeatherHandler(weatherData);
 
-        assertThrows(IllegalStateException.class, weatherHandler::getDayWithSmallestTemperatureSpread);
+        assertThrows(IllegalStateException.class, weatherHandler::process);
     }
 
     /**
@@ -90,7 +90,7 @@ public class WeatherHandlerTest {
         Table weatherData = new Table(columns);
         WeatherHandler weatherHandler = new WeatherHandler(weatherData);
 
-        assertThrows(IllegalStateException.class, weatherHandler::getDayWithSmallestTemperatureSpread);
+        assertThrows(IllegalStateException.class, weatherHandler::process);
     }
 
 }

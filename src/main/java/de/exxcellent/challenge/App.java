@@ -1,7 +1,7 @@
 package de.exxcellent.challenge;
 
 import de.exxcellent.challenge.handler.WeatherHandler;
-import de.exxcellent.challenge.reader.Reader;
+import de.exxcellent.challenge.reader.CSVFileReader;
 import de.exxcellent.challenge.table.Table;
 
 import java.util.regex.Pattern;
@@ -28,14 +28,14 @@ public final class App {
 
             String fileName = args[1];
 
-            Reader reader = new Reader();
+            CSVFileReader CSVFileReader = new CSVFileReader();
             String resourcePath = "/de/exxcellent/challenge/" + fileName;
 
 
             if(args[0].equals("--weather")){
-                Table weatherData = reader.read(resourcePath);
+                Table weatherData = CSVFileReader.read(resourcePath);
                 WeatherHandler weatherHandler = new WeatherHandler(weatherData);
-                String dayWithSmallestTempSpread = weatherHandler.getDayWithSmallestTemperatureSpread();
+                String dayWithSmallestTempSpread = weatherHandler.process();
 
                 System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
             } else if (args[0].equals("--football")) {

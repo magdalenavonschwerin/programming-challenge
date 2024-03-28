@@ -14,11 +14,19 @@ import java.util.stream.IntStream;
 
 /**
  * A class representing a reader that reads a CSV file into a table.
+ *
  * @author Magdalena von Schwerin
  */
 
 public class CSVFileReader implements FileReader {
 
+    /**
+     * Reads a file and saves its contents in a list of Strings.
+     *
+     * @param filePath the path to the file to be read starting from "/resources/"
+     * @return the file content as a List of Strings
+     * @throws IllegalArgumentException
+     */
     @Override
     public List<String> readFile(String filePath) throws IllegalArgumentException {
         List<String> lines = new ArrayList<>();
@@ -51,7 +59,7 @@ public class CSVFileReader implements FileReader {
     }
 
     /**
-     * reads a .csv file and saves the values in a table
+     * Reads a .csv file and saves the values as String into a table made up of columns.
      *
      * @param file the file path
      * @return a table filled with csv data - represented as String values
@@ -83,6 +91,4 @@ public class CSVFileReader implements FileReader {
         table = new Table(columns);
         return table;
     }
-
-
 }

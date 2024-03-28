@@ -3,7 +3,7 @@ package de.exxcellent.challenge.table;
 import java.util.List;
 
 /**
- * A class representing a Column of a table containing Strings.
+ * A class representing a Column of a table containing String values.
  *
  * @author Magdalena von Schwerin <magdalena.vonschwerin@gmail.com>
  */
@@ -61,6 +61,5 @@ public class Column {
             throw new IndexOutOfBoundsException("Invalid index.");
         }
     }
-
 
 }

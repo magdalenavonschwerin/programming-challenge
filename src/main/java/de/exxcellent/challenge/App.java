@@ -1,9 +1,11 @@
 package de.exxcellent.challenge;
 
-import de.exxcellent.challenge.handler.WeatherHandler;
+import de.exxcellent.challenge.handler.TableDataHandler;
 import de.exxcellent.challenge.reader.CSVFileReader;
 import de.exxcellent.challenge.table.Table;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -34,17 +36,20 @@ public final class App {
 
             if(args[0].equals("--weather")){
                 Table weatherData = CSVFileReader.read(resourcePath);
-                WeatherHandler weatherHandler = new WeatherHandler(weatherData);
+                List<String> header = Arrays.asList("MxT", "MnT", "Day");
+                TableDataHandler weatherHandler = new TableDataHandler(weatherData, header);
                 String dayWithSmallestTempSpread = weatherHandler.process();
 
                 System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
+
             } else if (args[0].equals("--football")) {
+                Table footballData = CSVFileReader.read(resourcePath);
+                List<String> header = Arrays.asList("Goals", "Goals Allowed", "Team");
+                TableDataHandler footballHandler = new TableDataHandler(footballData, header);
+                String teamWithSmallestGoalSpread = footballHandler.process();
 
-                String teamWithSmallestGoalSpread = "A good team";
-                System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
+                System.out.printf("Team with smallest goal spread : %s%n", teamWithSmallestGoalSpread);
             }
-
-
     }
 
     private static boolean isValidCSV(String fileName){
